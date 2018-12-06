@@ -1,11 +1,35 @@
 <html>
-    <body>
-        <form action="" method="post">
-            <input type="text" id="txt" name="txt" onpaste="return false" oncopy="return false" autocomplete="off" onkeypress="return fun_AllowOnlyAmountAndDot(this.id);">
-        <input type="submit" name="submit" id="submit">
-        </form>
-        <script type="text/javascript">
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<body>  
+<input type="text" name="emp_id" id="emp_id" placeholder="employ Id" class="numeric"  onkeypress="return fun_AllowOnlyAmountAndDot(this.id)" >
+<span id="error"></span> 
+</body>
+   <script type="text/javascript">
+        var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+        $(function (e) {
+		
+		//disabled  mouse interactions below lines
+          
+            $(".numeric").bind("paste", function (e) {
+                return false;
+            });
+            $(".numeric").bind("drop", function (e) {
+                return false;
+            });
+			 $(".numeric").bind("cut", function (e) {
+                return false;
+            });
+			 $(".numeric").bind("copy", function (e) {
+                return false;
+            });
+			
+			
+        });
+    </script>
 
+
+         <script type="text/javascript">
  function fun_AllowOnlyAmountAndDot(txt)
         {  
            
@@ -19,7 +43,6 @@
                {
              
                }
-
                  do
                {
                present=amount.indexOf(".",present);
@@ -36,10 +59,8 @@
                     alert("Wrong position of decimal point not  allowed !!");
                     return false;
                }
-
                if(count>=1 && event.keyCode == 46)
                {
-
                     event.keyCode=0;
                    
                     return false;
@@ -49,7 +70,7 @@
                 var lastdigits=amount.substring(amount.indexOf(".")+1,amount.length);
                 if(lastdigits.length>=3)
                             {
-                              alert("Two decimal places only allowed");
+                              alert("3 decimal places only allowed after dot");
                               event.keyCode=0;
                               return false;
                               }
@@ -62,10 +83,7 @@
                     alert("Only Numbers with dot allowed !!");
                     return false;
             }
-
         }
-
     </script>
 
-    </body>
 </html>
