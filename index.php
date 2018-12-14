@@ -85,5 +85,9 @@
             }
         }
     </script>
+	<!--mouse right click disabled code below-->
+	<script language="JavaScript">
+  document.oncontextmenu = document.body.oncontextmenu = function() {return false;}
+</script>
 
 </html>
