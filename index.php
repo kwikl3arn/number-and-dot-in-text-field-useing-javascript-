@@ -33,7 +33,7 @@
  function fun_AllowOnlyAmountAndDot(txt)
         {  
            
-            if(event.keyCode > 47 && event.keyCode < 58 || event.keyCode == 46)
+            if((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || (event.keyCode === 46))
             {
                var amount = document.getElementById(txt).value;
                var present=0;
