@@ -1,0 +1,78 @@
+<html>
+<head>
+<style>
+.number {
+  padding: 5px 10px;
+  font-size: 16px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+The logic is every time a user entering a number you have to check two things.
+
+Has the user entered decimal point?
+Are the decimal places more than two?
+For the first one you can use $(this).val().indexOf('.') != -1
+
+For the second one you can use $(this).val().substring($(this).val().indexOf('.'), $(this).val().indexOf('.').length).length > 2
+
+EDIT-1
+Also, you have to add event.which != 0 && event.which != 8 so that arrow keys and backspace work in Firefox (Manoj comment)
+
+EDIT-2
+Also, you have to add $(this)[0].selectionStart >= text.length - 2 so that you can add digits if the cursor is to the left of the decimal point (BIdesi comment)
+
+EDIT-3
+Also, you have to check if user deleted . and placed it somewhere else creating a value with more than ,
+2 digits after the decimal. 
+So you have to add $this.val($this.val().substring(0, $this.val().indexOf('.') + 3)); 
+for cutting extra digits (Gilberto Sánchez comment)
+
+EDIT-4
+To handle pasted data, you must bind a paste event handler.Then you have to check if pasted data have . 
+withtext.indexOf('.') > -1 and more than 2 digits after the decimal with text.
+substring(text.indexOf('.')).length > 3. 
+If so, you have to cut extra digits. Also you have to check that user entered numeric input with $.isNumeric() (darasd comment).
+<input type="text" class="number" />
+</body>
+</html>
+<script>
+$('.number').keypress(function(event) {
+    var $this = $(this);
+    if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+       ((event.which < 48 || event.which > 57) &&
+       (event.which != 0 && event.which != 8))) {
+           event.preventDefault();
+    }
+
+    var text = $(this).val();
+    if ((event.which == 46) && (text.indexOf('.') == -1)) {
+        setTimeout(function() {
+            if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+            }
+        }, 1);
+    }
+
+    if ((text.indexOf('.') != -1) &&
+        (text.substring(text.indexOf('.')).length > 2) &&
+        (event.which != 0 && event.which != 8) &&
+        ($(this)[0].selectionStart >= text.length - 2)) {
+            event.preventDefault();
+    }      
+});
+
+$('.number').bind("paste", function(e) {
+var text = e.originalEvent.clipboardData.getData('Text');
+if ($.isNumeric(text)) {
+    if ((text.substring(text.indexOf('.')).length > 3) && (text.indexOf('.') > -1)) {
+        e.preventDefault();
+        $(this).val(text.substring(0, text.indexOf('.') + 3));
+   }
+}
+else {
+        e.preventDefault();
+     }
+});
+</script>
